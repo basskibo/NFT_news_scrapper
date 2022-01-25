@@ -19,9 +19,17 @@ const newspapers = [
 		address: "https://cointelegraph.com/tags/nft",
 		urlRootFormation: "https://cointelegraph.com",
 	},
-	{ name: "BBC", address: "https://www.bbc.com/news/technology" },
+	{
+		name: "BBC",
+		address: "https://www.bbc.com/news/technology",
+		urlRootFormation: "https://www.bbc.com",
+	},
 	{ name: "The Guardian", address: "https://www.theguardian.com/uk/technology" },
-	{ name: "USA Today", address: "https://www.usatoday.com/tech" },
+	{
+		name: "USA Today",
+		address: "https://www.usatoday.com/tech",
+		urlRootFormation: "https://www.usatoday.com",
+	},
 
 	{
 		name: "Independent",
@@ -37,7 +45,21 @@ const newspapers = [
 	},
 ]
 const articles = []
-const NFTArticles = []
+let NFTArticles = []
+
+function removeDuplicates(originalArray, prop) {
+	var newArray = []
+	var lookupObject = {}
+
+	for (var i in originalArray) {
+		lookupObject[originalArray[i][prop]] = originalArray[i]
+	}
+
+	for (i in lookupObject) {
+		newArray.push(lookupObject[i])
+	}
+	return newArray
+}
 
 newspapers.forEach((source) => {
 	console.log(source)
@@ -59,6 +81,7 @@ newspapers.forEach((source) => {
 			const formattedUrl = source.urlRootFormation
 				? `${source.urlRootFormation}${url}`
 				: parsedSource
+
 			NFTArticles.push({ title, url: formattedUrl, source: source.name })
 		})
 	})
@@ -69,12 +92,9 @@ app.get("/", (req, res) => {
 })
 
 app.get("/news", (req, res) => {
+	NFTArticles = removeDuplicates(NFTArticles, "url")
 	res.json(NFTArticles)
 })
-
-// app.get("/news/catalog", (req, res) => {
-// 	res.json("NEWS Catalog !")
-// })
 
 app.listen(PORT, () => {
 	console.log("Server listening on port: ", PORT)
