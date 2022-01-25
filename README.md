@@ -1,4 +1,4 @@
-# NFT Scrapper
+# NFT News Scrapper
 
 - Clone project 
 - Run 
